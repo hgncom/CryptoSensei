@@ -7,6 +7,7 @@ WORKDIR /app
 # Copy the necessary files into the container
 COPY server.py .
 COPY openapi.yaml .
+COPY ai-plugin.json .
 
 # Install the required dependencies
 RUN pip install fastapi requests uvicorn cachetools
