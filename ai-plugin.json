@@ -1,0 +1,54 @@
+{
+  "name": "CryptoSensei",
+  "description": "A plugin to get cryptocurrency information, including prices, historical data, news, social media stats, and more.",
+  "endpoints": [
+    {
+      "name": "get_crypto_price",
+      "description": "Get the current price of a cryptocurrency.",
+      "method": "GET",
+      "path": "/get_crypto_price/{crypto_name}"
+    },
+    {
+      "name": "get_historical_daily_data",
+      "description": "Get historical daily data for a cryptocurrency.",
+      "method": "GET",
+      "path": "/get_historical_daily_data/{crypto_name}"
+    },
+    {
+      "name": "get_historical_hourly_data",
+      "description": "Get historical hourly data for a cryptocurrency.",
+      "method": "GET",
+      "path": "/get_historical_hourly_data/{crypto_name}"
+    },
+    {
+      "name": "get_historical_minute_data",
+      "description": "Get historical minute data for a cryptocurrency.",
+      "method": "GET",
+      "path": "/get_historical_minute_data/{crypto_name}"
+    },
+    {
+      "name": "get_crypto_news",
+      "description": "Get the latest news about cryptocurrencies.",
+      "method": "GET",
+      "path": "/get_crypto_news"
+    },
+    {
+      "name": "get_top_cryptos",
+      "description": "Get a list of the top 10 cryptocurrencies by market capitalization.",
+      "method": "GET",
+      "path": "/get_top_cryptos/"
+    },
+    {
+      "name": "get_social_media_stats",
+      "description": "Get social media statistics for a cryptocurrency.",
+      "method": "GET",
+      "path": "/get_social_media_stats/{crypto_name}"
+    },
+    {
+      "name": "get_average_price",
+      "description": "Get the average price of a cryptocurrency.",
+      "method": "GET",
+      "path": "/get_average_price/{crypto_name}"
+    }
+  ]
+}

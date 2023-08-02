@@ -1,0 +1,53 @@
+openapi: 3.0.0
+info:
+  title: CryptoSensei Plugin
+  version: 1.0.0
+  x-logo:
+    url: https://zvv.com/cryptosensei/icon.png
+paths:
+  /crypto/price/{symbol}:
+    get:
+      summary: Get the current price of a cryptocurrency.
+      description: Retrieve the current price of a cryptocurrency in USD.
+      tags:
+        - Price
+      parameters:
+        - name: symbol
+          in: path
+          description: The symbol of the cryptocurrency (e.g., BTC, ETH).
+          required: true
+          schema:
+            type: string
+            pattern: "^[A-Z]{3,5}$"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  USD:
+                    type: number
+  /crypto/historical/daily/{symbol}:
+    get:
+      summary: Get the historical daily data for a cryptocurrency.
+      description: Retrieve the historical daily price data for a cryptocurrency in USD.
+      tags:
+        - Historical Data
+      parameters:
+        - name: symbol
+          in: path
+          description: The symbol of the cryptocurrency (e.g., BTC, ETH).
+          required: true
+          schema:
+            type: string
+            pattern: "^[A-Z]{3,5}$"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  # Add other endpoints with improvements as needed...
