@@ -1,16 +1,16 @@
-from fastapi import APIRouter, HTTPException, APIRouter
-from ..api_requests import get_data_from_api, validate_api_response
-
+from fastapi import APIRouter
+from api_requests import ExternalAPIError
+from api import crypto_service
 
 router = APIRouter()
 
 @router.get("/get_historical_daily_data/{crypto_name}")
 def get_historical_daily_data(crypto_name: str):
-    url = f"https://min-api.cryptocompare.com/data/v2/histoday?fsym={crypto_name}&tsym=USD"
     try:
-        data = get_data_from_api(url)
+        data = crypto_service.get_historical_daily_data(crypto_name)
         return data
-    except HTTPException as e:
+    except ExternalAPIError as e:
         raise e
     except Exception as e:
-        raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
+        detail = f"An unexpected error occurred while processing the request: {str(e)}"
+        raise ExternalAPIError(detail=detail)

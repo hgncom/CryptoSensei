@@ -1,16 +1,17 @@
-from fastapi import HTTPException, APIRouter
-import json
-from ..api_requests import get_data_from_api, validate_api_response
+from fastapi import APIRouter
+from api_requests import ExternalAPIError
+from api import crypto_service
 
 router = APIRouter()
 
 @router.get("/get_crypto_news")
 def get_crypto_news():
-    url = f"{CRYPTOCOMPARE_API_BASE_URL}/v2/news/?lang=EN"
     try:
-        data = get_data_from_api(url)
+        data = crypto_service.get_crypto_news()
         return data
-    except HTTPException as e:
+    except ExternalAPIError as e:
         raise e
     except Exception as e:
-        raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
+        detail = f"An unexpected error occurred while processing the request: {str(e)}"
+        raise ExternalAPIError(detail=detail)
+

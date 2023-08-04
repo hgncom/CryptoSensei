@@ -4,10 +4,10 @@ from api import crypto_service
 
 router = APIRouter()
 
-@router.get("/get_top_cryptos/")
-def get_top_cryptos():
+@router.get("/get_multiple_symbols_full_data/{crypto_names}/{currency_names}")
+def get_multiple_symbols_full_data(crypto_names: str, currency_names: str):
     try:
-        data = crypto_service.get_top_cryptos()
+        data = crypto_service.get_multiple_symbols_full_data(crypto_names, currency_names)
         return data
     except ExternalAPIError as e:
         raise e

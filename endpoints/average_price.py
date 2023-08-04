@@ -1,15 +1,25 @@
-from fastapi import HTTPException, APIRouter
-from ..api_requests import get_data_from_api, validate_api_response
+from fastapi import APIRouter
+from api_requests import ExternalAPIError, InvalidCryptoSymbol
+from api import cryptocompare
 
 router = APIRouter()
 
-@router.get("/get_average_price/{crypto_name}")
+@router.get(
+    "/get_average_price/{crypto_name}",
+    summary="Average price",
+    description="This endpoint returns the average price of a specified cryptocurrency over a certain period. The data is retrieved from the CryptoCompare API, specifically from the 'generateAvg' endpoint. The average price is calculated based on the provided cryptocurrency symbol (e.g., 'BTC' for Bitcoin) and it is returned in USD."
+)
 def get_average_price(crypto_name: str):
-    url = f"{CRYPTOCOMPARE_API_BASE_URL}/generateAvg?fsym={crypto_name}&tsym=USD&e=Kraken"
     try:
-        data = get_data_from_api(url)
+        # Call the function from the cryptocompare module here
+        data = crypto_service.get_average_price(crypto_name)
         return data
-    except HTTPException as e:
+    except ExternalAPIError as e:
         raise e
+    except InvalidCryptoSymbol as e:
+        detail = f"Invalid cryptocurrency symbol: {str(e)}"
+        raise ExternalAPIError(status_code=400, detail=detail)
     except Exception as e:
-        raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
+        detail = f"An unexpected error occurred while processing the request: {str(e)}"
+        raise ExternalAPIError(detail=detail)
+

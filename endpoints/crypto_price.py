@@ -1,16 +1,17 @@
-from fastapi import APIRouter, HTTPException
-import json
-from CryptoSensei.api_requests import get_data_from_api, validate_api_response
+from fastapi import APIRouter
+from api_requests import ExternalAPIError
+from api import crypto_service
 
 router = APIRouter()
 
 @router.get("/get_crypto_price/{crypto_name}")  # This makes the function an HTTP endpoint
 def get_crypto_price(crypto_name: str):
-    url = f"{CRYPTOCOMPARE_API_BASE_URL}/price?fsym={crypto_name}&tsyms=USD"
     try:
-        data = get_data_from_api(url)
+        data = crypto_service.get_crypto_price(crypto_name)
         return data
-    except HTTPException as e:
+    except ExternalAPIError as e:
         raise e
     except Exception as e:
-        raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
+        detail = f"An unexpected error occurred while processing the request: {str(e)}"
+        raise ExternalAPIError(detail=detail)
+

@@ -1,17 +1,19 @@
-from fastapi import APIRouter, HTTPException
-from ..api_requests import get_data_from_api, validate_api_response
+from fastapi import APIRouter
+from api_requests import ExternalAPIError, InvalidCryptoSymbol
+from api import crypto_service
 
 router = APIRouter()
 
 @router.get("/get_historical_minute_data/{crypto_name}")
 def get_historical_minute_data(crypto_name: str):
-    url = f"{CRYPTOCOMPARE_API_BASE_URL}/v2/histominute?fsym={crypto_name}&tsym=USD"
     try:
-        data = get_data_from_api(url)
+        data = crypto_service.get_historical_minute_data(crypto_name)
         return data
-    except HTTPException as e:
+    except ExternalAPIError as e:
         raise e
-    except InvalidCryptoSymbol:
-        raise HTTPException(status_code=400, detail="Invalid cryptocurrency symbol")
+    except InvalidCryptoSymbol as e:
+        detail = f"Invalid cryptocurrency symbol: {str(e)}"
+        raise ExternalAPIError(detail=detail)
     except Exception as e:
-        raise HTTPException(status_code=500, detail="An error occurred while processing the request.")
+        detail = f"An unexpected error occurred while processing the request: {str(e)}"
+        raise ExternalAPIError(detail=detail)
